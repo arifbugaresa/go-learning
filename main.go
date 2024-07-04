@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/spf13/viper"
+	"go-learning/utils/configs"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	configs.ReadConfigurations()
+
+	fmt.Println(viper.GetString("name"))
+	fmt.Println(viper.GetString("app.mode"))
 }

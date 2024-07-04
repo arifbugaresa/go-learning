@@ -1,0 +1,23 @@
+{
+  "name": "Enterprise Project",
+  "app": {
+    "mode": "development",
+    "base_url": "localhost",
+    "port": ":8080"
+  },
+  "migration": {
+    "db": {
+      "mysql": {
+        "db_host": "localhost",
+        "db_port": "3307",
+        "db_name": "go_enterprise",
+        "db_user": "admin",
+        "db_password": "d8K3cqVSHTPWHG",
+        "db_engine": "mysql"
+      }
+    }
+  },
+  "chat_gpt": {
+    "app_key": ""
+  }
+}
