@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"go-learning/modules"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	modules.LearningDataStructure()
+	modules.LearningLoop()
 }
