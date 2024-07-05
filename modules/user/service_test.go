@@ -33,7 +33,7 @@ func TestUser(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			repoMock := userRepositoryMock{}
+			repoMock := UserRepositoryMock{}
 
 			// set mock repository
 			repoMock.On("GetMessage", "arifbugaresa").Return("Hello "+tc.Data.(string), nil)
