@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"go-learning/modules/user"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	userRepo := user.NewUserRepository()
+	userService := user.NewUserService(userRepo)
+
+	message := userService.GetMessage()
+
+	fmt.Println(message)
 }
