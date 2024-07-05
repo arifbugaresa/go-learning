@@ -1,8 +1,10 @@
 package main
 
+import "go-learning/modules"
+
 func main() {
 	LearningVariable()
-	LearningConstant()
-	LearningDataType()
-	LearningCommonGoPackages()
+	modules.LearningConstant()
+	modules.LearningDataType()
+	modules.LearningCommonGoPackages()
 }
