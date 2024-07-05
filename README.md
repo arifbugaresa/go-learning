@@ -4,6 +4,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 ## Guide
 #### Basic
 * [TCK-BSC-001](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-001) - introduction variable, constant, data type and common package 
+* [TCK-BSC-002](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-002) - operator and conditional 
 
 #### Intermediete
 * [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env files with viper 
