@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("Hello World")
+	LearningVariable()
+	LearningConstant()
+	LearningDataType()
+	LearningCommonGoPackages()
 }
