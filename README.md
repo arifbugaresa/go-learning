@@ -8,7 +8,7 @@ Unit testing adalah salah satu praktik penting dalam pengembangan perangkat luna
 Anda bisa menginstal stretchr/testify dengan perintah berikut:
 
 ```sh
-go go get https://github.com/stretchr/testify
+go get https://github.com/stretchr/testify
 ```
 
 
@@ -110,5 +110,5 @@ go test -v ./...
 ```
 
 ## License
-Project ini belum memiliki lisensi resmi. Anda bisa melakukan fork untuk clone project ini dan menggunakannya semata-mata untuk pembelajaran
+Project ini belum memiliki lisensi resmi. Anda bisa melakukan fork untuk clone project ini
 
