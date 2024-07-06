@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"go-learning/utils/commonFuntion"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	err := commonFuntion.GetDBConnection()
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	err = commonFuntion.GetElasticConnection()
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
