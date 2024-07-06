@@ -7,6 +7,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-BSC-002](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-002) - operator and conditional 
 * [TCK-BSC-003](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-003) - array, slice, map and looping
 * [TCK-BSC-004](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-004) - function
+* [TCK-BSC-005](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-005) - pointer
 
 #### Intermediete
 * [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env files with viper 
