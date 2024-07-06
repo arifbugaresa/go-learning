@@ -10,6 +10,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-BSC-005](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-005) - pointer
 * [TCK-BSC-006](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-006) - struct & method
 * [TCK-BSC-007](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-007) - interface
+* [TCK-BSC-008](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-007) - package & import
 
 #### Intermediete
 * [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env files with viper 
