@@ -12,6 +12,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-BSC-007](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-007) - interface
 * [TCK-BSC-008](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-008) - package & import
 * [TCK-BSC-009](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-009) - defer, panic, recover, error
+* [TCK-BSC-010](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-0010) - goroutines & channel
 
 #### Intermediete
 * [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env files with viper 
