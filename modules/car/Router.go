@@ -3,10 +3,13 @@ package car
 import (
 	"github.com/gin-gonic/gin"
 	"go-learning/helpers/common"
+	"go-learning/middlewares"
 )
 
 func Initiator(router *gin.Engine) {
 	api := router.Group("/api")
+	api.Use(middlewares.JwtMiddleware())
+	api.Use(middlewares.Logging())
 	{
 		api.POST("/cars", CreateCarRouter)
 		api.GET("/cars", GetAllCarRouter)
