@@ -17,7 +17,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-BSC-012](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-012) - middleware
 
 #### Intermediete
-* [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env files with viper 
+* [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env file json (viper)
 * [TCK-IMD-002](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-002) - working with unit test (testify)
 * [TCK-IMD-003](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-003) - mocking service & repo (testify)
 * [TCK-IMD-004](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-004) - basic pattern using gin (gin framework)
