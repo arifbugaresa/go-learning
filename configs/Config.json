@@ -9,11 +9,19 @@
     "db": {
       "mysql": {
         "db_host": "localhost",
-        "db_port": "3307",
+        "db_port": 3307,
         "db_name": "go_enterprise",
         "db_user": "admin",
         "db_password": "d8K3cqVSHTPWHG",
         "db_engine": "mysql"
+      },
+      "postgres": {
+        "db_host": "localhost",
+        "db_port": 5433,
+        "db_name": "go_learning",
+        "db_user": "root",
+        "db_password": "password",
+        "db_engine": "postgres"
       }
     }
   },

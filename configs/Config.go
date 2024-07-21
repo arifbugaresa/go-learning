@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func InitiateConfiguration() {
+func Initiator() {
 	viper.SetConfigName("Config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath("./configs")
