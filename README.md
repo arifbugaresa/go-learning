@@ -24,6 +24,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-IMD-005](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-005) - working with jwt middleware (gin framework)
 * [TCK-IMD-006](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-006) - working with excel (excelize)
 * [TCK-IMD-007](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-OO7) - protobuf
+* [TCK-IMD-009](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-OO9) - working with query builder (goqu)
 
 ## Staying up to date
 To keep updating new case studies, You can fork or clone this project.
