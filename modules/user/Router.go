@@ -7,7 +7,7 @@ import (
 )
 
 func Initiator(router *gin.Engine) {
-	api := router.Group("/api")
+	api := router.Group("/api/users")
 	{
 		api.POST("/login", Login)
 		api.POST("/signup", SignUp)

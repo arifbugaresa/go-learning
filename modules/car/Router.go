@@ -7,15 +7,15 @@ import (
 )
 
 func Initiator(router *gin.Engine) {
-	api := router.Group("/api")
+	api := router.Group("/api/cars")
 	api.Use(middlewares.JwtMiddleware())
 	api.Use(middlewares.Logging())
 	{
-		api.POST("/cars", CreateCarRouter)
-		api.GET("/cars", GetAllCarRouter)
-		api.GET("/cars/:id", GetCarRouter)
-		api.PUT("/cars/:id", UpdateCarRouter)
-		api.DELETE("/cars/:id", DeleteCarRouter)
+		api.POST("", CreateCarRouter)
+		api.GET("", GetAllCarRouter)
+		api.GET("/:id", GetCarRouter)
+		api.PUT("/:id", UpdateCarRouter)
+		api.DELETE("/:id", DeleteCarRouter)
 	}
 }
 

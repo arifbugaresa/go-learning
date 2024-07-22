@@ -42,9 +42,8 @@ type GetEmployeeResponse struct {
 
 type GetEmployeeRequest struct {
 	common.SearchAndFilter
-	SearchBy SearchGetEmployeeRequest
 }
 
 type SearchGetEmployeeRequest struct {
-	FullName string
+	FullName string `json:"full_name"`
 }

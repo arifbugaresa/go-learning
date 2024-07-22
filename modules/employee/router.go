@@ -7,9 +7,9 @@ import (
 )
 
 func Initiator(router *gin.Engine) {
-	api := router.Group("/api")
+	api := router.Group("/api/employees")
 	{
-		api.GET("/employees", ListEmployee)
+		api.GET("", ListEmployee)
 	}
 }
 

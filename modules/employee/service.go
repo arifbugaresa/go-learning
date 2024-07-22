@@ -20,7 +20,16 @@ func NewService(repository Repository) Service {
 }
 
 func (service *userService) GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, err error) {
-	employees, err := service.repository.GetAllEmployee()
+	var (
+		req GetEmployeeRequest
+	)
+
+	err = ctx.ShouldBindJSON(&req.SearchAndFilter)
+	if err != nil {
+		return nil, err
+	}
+
+	employees, err := service.repository.GetAllEmployee(req)
 	if err != nil {
 		err = errors.New("failed get all employees")
 		return

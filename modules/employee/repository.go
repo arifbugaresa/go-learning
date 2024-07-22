@@ -4,11 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/doug-martin/goqu/v9"
+	"go-learning/helpers/common"
 	"go-learning/helpers/constant"
 )
 
 type Repository interface {
-	GetAllEmployee() (result []Employee, err error)
+	GetAllEmployee(request GetEmployeeRequest) (result []Employee, err error)
 }
 
 type empRepository struct {
@@ -21,7 +22,7 @@ func NewRepository(dbParam *sql.DB) Repository {
 	}
 }
 
-func (r *empRepository) GetAllEmployee() (result []Employee, err error) {
+func (r *empRepository) GetAllEmployee(request GetEmployeeRequest) (result []Employee, err error) {
 	conn := goqu.New(constant.PostgresDialect.String(), r.db)
 
 	dataset := conn.From(constant.EmployeeTableName.String()).
@@ -36,6 +37,11 @@ func (r *empRepository) GetAllEmployee() (result []Employee, err error) {
 			goqu.C("created_at"),
 			goqu.C("created_by"),
 		)
+
+	// todo activate filter where
+	if !common.IsEmptyField(request.SearchBy) {
+		fmt.Println(request.SearchBy)
+	}
 
 	err = dataset.Prepared(true).ScanStructs(&result)
 	if err != nil {
