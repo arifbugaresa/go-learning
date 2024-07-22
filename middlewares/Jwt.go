@@ -42,7 +42,7 @@ func JwtMiddleware() gin.HandlerFunc {
 func GetJwtTokenFromHeader(c *gin.Context) (tokenString string, err error) {
 	authHeader := c.Request.Header.Get("Authorization")
 
-	if common.CheckIsStringEmpty(authHeader) {
+	if common.IsEmptyField(authHeader) {
 		return tokenString, errors.New("authorization header is required")
 	}
 

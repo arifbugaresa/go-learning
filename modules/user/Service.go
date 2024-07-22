@@ -41,7 +41,7 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return
 	}
 
-	if common.CheckIsNumericEmpty(user.ID) {
+	if common.IsEmptyField(user.ID) {
 		err = errors.New("invalid account")
 		return
 	}

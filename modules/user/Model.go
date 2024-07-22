@@ -17,11 +17,11 @@ type LoginRequest struct {
 }
 
 func (l *LoginRequest) ValidateLogin() (err error) {
-	if common.CheckIsStringEmpty(l.Username) {
+	if common.IsEmptyField(l.Username) {
 		return errors.New("username required")
 	}
 
-	if common.CheckIsStringEmpty(l.Password) {
+	if common.IsEmptyField(l.Password) {
 		return errors.New("password required")
 	}
 
@@ -39,16 +39,16 @@ type SignUpRequest struct {
 }
 
 func (s *SignUpRequest) ValidateSignUp() (err error) {
-	if common.CheckIsStringEmpty(s.Username) {
+	if common.IsEmptyField(s.Username) {
 		return errors.New("username required")
 	}
 
-	if common.CheckIsStringEmpty(s.Password) {
+	if common.IsEmptyField(s.Password) {
 
 		return errors.New("password required")
 	}
 
-	if common.CheckIsStringEmpty(s.ReTypePassword) {
+	if common.IsEmptyField(s.ReTypePassword) {
 		return errors.New("retype password required")
 	}
 
