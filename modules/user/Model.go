@@ -5,25 +5,6 @@ import (
 	"go-learning/helpers/common"
 )
 
-var DummyUser = []UserOld{
-	{
-		Username: "admin",
-		Password: "admin",
-		Role:     "super_admin",
-	},
-	{
-		Username: "developer",
-		Password: "developer",
-		Role:     "passive_user",
-	},
-}
-
-type UserOld struct {
-	Username string
-	Password string
-	Role     string
-}
-
 type User struct {
 	ID       int64  `db:"id"`
 	Username string `db:"username"`
