@@ -19,7 +19,7 @@ func (t TableName) String() string {
 
 const (
 	EmployeeTableName TableName = "employees"
-	UserTableName     TableName = "auth_user"
+	UserTableName     TableName = "users"
 )
 
 type DateTimeFormat string

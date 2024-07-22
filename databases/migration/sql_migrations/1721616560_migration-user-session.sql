@@ -1,7 +1,7 @@
 -- +migrate Up
 -- +migrate StatementBegin
 
-CREATE TABLE auth_user(
+CREATE TABLE users (
     id              SERIAL PRIMARY KEY,
     username        VARCHAR(256) NOT NULL,
     password        VARCHAR(256) NOT NULL,
@@ -15,14 +15,14 @@ CREATE TABLE auth_user(
     modified_by     VARCHAR(356) DEFAULT 'SYSTEM'
 );
 
-ALTER TABLE auth_user
+ALTER TABLE users
     ADD CONSTRAINT unique_username UNIQUE (username);
 
-CREATE TABLE session_history(
+CREATE TABLE session_histories (
     user_id         INTEGER NOT NULL,
     token           TEXT,
     session_data    TEXT,
-    created_at      TIMESTAMP DEFAULT NOW(),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expired_at      TIMESTAMP
 );
 
