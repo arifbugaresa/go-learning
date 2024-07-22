@@ -3,12 +3,14 @@ package user
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"go-learning/helpers/common"
 	"go-learning/middlewares"
 	"time"
 )
 
 type Service interface {
 	LoginService(ctx *gin.Context) (result LoginResponse, err error)
+	SignUpService(ctx *gin.Context) (err error)
 }
 
 type userService struct {
@@ -34,9 +36,13 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return
 	}
 
-	user, err := service.repository.LoginRepository(userReq)
+	user, err := service.repository.Login(userReq)
 	if err != nil {
-		err = errors.New("invalid username or password")
+		return
+	}
+
+	if common.CheckIsNumericEmpty(user.ID) {
+		err = errors.New("user not found")
 		return
 	}
 
@@ -48,7 +54,6 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 	middlewares.DummyRedis[jwtToken] = middlewares.UserLoginRedis{
 		UserId:    0,
 		Username:  user.Username,
-		Role:      user.Role,
 		LoginAt:   time.Now(),
 		ExpiredAt: time.Now().Add(time.Minute * 1),
 	}
@@ -56,4 +61,26 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 	result.Token = jwtToken
 
 	return
+}
+
+func (service *userService) SignUpService(ctx *gin.Context) (err error) {
+	var userReq SignUpRequest
+
+	err = ctx.ShouldBind(&userReq)
+	if err != nil {
+		return
+	}
+
+	err = userReq.ValidateSignUp()
+	if err != nil {
+		return err
+	}
+
+	err = service.repository.SignUp(userReq.ConvertToModelForSignUp())
+	if err != nil {
+		err = errors.New("failed sign up user")
+		return
+	}
+
+	return nil
 }
