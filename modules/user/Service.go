@@ -42,7 +42,13 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 	}
 
 	if common.CheckIsNumericEmpty(user.ID) {
-		err = errors.New("user not found")
+		err = errors.New("invalid account")
+		return
+	}
+
+	matches := common.CheckPassword(user.Password, userReq.Password)
+	if !matches {
+		err = errors.New("wrong username or password")
 		return
 	}
 
@@ -68,7 +74,7 @@ func (service *userService) SignUpService(ctx *gin.Context) (err error) {
 
 	err = ctx.ShouldBind(&userReq)
 	if err != nil {
-		return
+		return err
 	}
 
 	err = userReq.ValidateSignUp()
@@ -76,10 +82,14 @@ func (service *userService) SignUpService(ctx *gin.Context) (err error) {
 		return err
 	}
 
-	err = service.repository.SignUp(userReq.ConvertToModelForSignUp())
+	user, err := userReq.ConvertToModelForSignUp()
 	if err != nil {
-		err = errors.New("failed sign up user")
-		return
+		return err
+	}
+
+	err = service.repository.SignUp(user)
+	if err != nil {
+		return err
 	}
 
 	return nil

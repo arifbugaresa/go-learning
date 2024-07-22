@@ -2,6 +2,7 @@ package user
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/doug-martin/goqu/v9"
 	"go-learning/helpers/constant"
 )
@@ -24,14 +25,17 @@ func NewRepository(database *sql.DB) Repository {
 func (r *userRepository) Login(user LoginRequest) (result User, err error) {
 	conn := goqu.New(constant.PostgresDialect.String(), r.db)
 	dialect := conn.From(constant.UserTableName.String()).
-		Select(goqu.C("id")).
+		Select(
+			goqu.C("id"),
+			goqu.C("password"),
+		).
 		Where(
 			goqu.I("username").Eq(user.Username),
-			goqu.I("password").Eq(user.Password),
 		)
 
 	_, err = dialect.ScanStruct(&result)
 	if err != nil {
+		err = errors.New("failed login")
 		return
 	}
 
@@ -50,6 +54,7 @@ func (r *userRepository) SignUp(user User) (err error) {
 
 	_, err = dataset.Executor().Exec()
 	if err != nil {
+		err = errors.New("failed sign up user")
 		return err
 	}
 

@@ -78,11 +78,17 @@ func (s *SignUpRequest) ValidateSignUp() (err error) {
 	return nil
 }
 
-func (s *SignUpRequest) ConvertToModelForSignUp() User {
+func (s *SignUpRequest) ConvertToModelForSignUp() (user User, err error) {
+	hashedPassword, err := common.HashPassword(s.Password)
+	if err != nil {
+		err = errors.New("hashing password failed")
+		return
+	}
+
 	return User{
 		Username: s.Username,
-		Password: s.Password,
-	}
+		Password: hashedPassword,
+	}, nil
 }
 
 type SignUpResponse struct {
