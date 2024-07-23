@@ -2,14 +2,14 @@ package employee
 
 import (
 	"database/sql"
-	"fmt"
 	"github.com/doug-martin/goqu/v9"
 	"go-learning/helpers/common"
 	"go-learning/helpers/constant"
+	"go-learning/helpers/database"
 )
 
 type Repository interface {
-	GetAllEmployee(request GetEmployeeRequest) (result []Employee, err error)
+	GetAllEmployee(request GetEmployeeRequest) (result []Employee, total int64, err error)
 }
 
 type empRepository struct {
@@ -22,9 +22,13 @@ func NewRepository(dbParam *sql.DB) Repository {
 	}
 }
 
-func (r *empRepository) GetAllEmployee(request GetEmployeeRequest) (result []Employee, err error) {
-	conn := goqu.New(constant.PostgresDialect.String(), r.db)
+func (r *empRepository) GetAllEmployee(request GetEmployeeRequest) (result []Employee, total int64, err error) {
+	var (
+		sortField = "id"
+		sortOrder = "ASC"
+	)
 
+	conn := goqu.New(constant.PostgresDialect.String(), r.db)
 	dataset := conn.From(constant.EmployeeTableName.String()).
 		Select(
 			goqu.C("id"),
@@ -38,14 +42,22 @@ func (r *empRepository) GetAllEmployee(request GetEmployeeRequest) (result []Emp
 			goqu.C("created_by"),
 		)
 
-	// todo activate filter where
-	if !common.IsEmptyField(request.SearchBy) {
-		fmt.Println(request.SearchBy)
+	if !common.IsEmptyField(request.SearchBy.FullName) {
+		dataset = dataset.Where(
+			goqu.I("full_name").ILike("%" + *request.SearchBy.FullName + "%"),
+		)
 	}
 
-	err = dataset.Prepared(true).ScanStructs(&result)
+	if (!common.IsEmptyField(request.SortField)) && (!common.IsEmptyField(request.SortOrder)) {
+		sortField = *request.SortField
+		sortOrder = *request.SortOrder
+	}
+
+	dataset, total, err = database.BuildDatasetPaginationWithTotalData(dataset, request.Page, request.Limit, sortField, sortOrder)
+
+	err = dataset.ScanStructs(&result)
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 
 	return

@@ -19,11 +19,11 @@ func ListEmployee(ctx *gin.Context) {
 		empSrv  = NewService(empRepo)
 	)
 
-	data, err := empSrv.GetListEmployee(ctx)
+	data, total, err := empSrv.GetListEmployee(ctx)
 	if err != nil {
 		common.GenerateErrorResponse(ctx, err.Error())
 		return
 	}
 
-	common.GenerateSuccessResponseWithData(ctx, "successfully get all employee data", data)
+	common.GenerateSuccessResponseWithListData(ctx, "successfully get all employee data", total, data)
 }

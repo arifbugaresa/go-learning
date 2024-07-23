@@ -6,6 +6,7 @@ func TestIsEmptyField(t *testing.T) {
 	type args struct {
 		v interface{}
 	}
+
 	tests := []struct {
 		name string
 		args args

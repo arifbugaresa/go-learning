@@ -1,12 +1,11 @@
 package employee
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 )
 
 type Service interface {
-	GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, err error)
+	GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, total int64, err error)
 }
 
 type userService struct {
@@ -19,19 +18,18 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (service *userService) GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, err error) {
+func (service *userService) GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, total int64, err error) {
 	var (
 		req GetEmployeeRequest
 	)
 
-	err = ctx.ShouldBindJSON(&req.SearchAndFilter)
+	err = ctx.ShouldBindJSON(&req)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	employees, err := service.repository.GetAllEmployee(req)
+	employees, total, err := service.repository.GetAllEmployee(req)
 	if err != nil {
-		err = errors.New("failed get all employees")
 		return
 	}
 
