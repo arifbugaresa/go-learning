@@ -3,9 +3,9 @@ package employee
 import (
 	"database/sql"
 	"github.com/doug-martin/goqu/v9"
-	"go-learning/helpers/common"
-	"go-learning/helpers/constant"
-	"go-learning/helpers/database"
+	"go-learning/utils/common"
+	"go-learning/utils/constant"
+	"go-learning/utils/database"
 )
 
 type Repository interface {

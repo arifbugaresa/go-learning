@@ -8,10 +8,13 @@ import (
 	"go-learning/modules/car"
 	"go-learning/modules/employee"
 	"go-learning/modules/user"
+	"go-learning/utils/logger"
 )
 
 func main() {
 	configs.Initiator()
+
+	logger.Initiator()
 
 	connection.Initiator()
 	defer connection.DBConnections.Close()

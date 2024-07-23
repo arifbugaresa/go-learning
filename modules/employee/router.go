@@ -3,13 +3,14 @@ package employee
 import (
 	"github.com/gin-gonic/gin"
 	"go-learning/databases/connection"
-	"go-learning/helpers/common"
 	"go-learning/middlewares"
+	"go-learning/utils/common"
 )
 
 func Initiator(router *gin.Engine) {
 	api := router.Group("/api/employees")
 	api.Use(middlewares.JwtMiddleware())
+	api.Use(middlewares.Logging())
 	{
 		api.GET("", ListEmployee)
 	}

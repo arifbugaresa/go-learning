@@ -2,8 +2,8 @@ package car
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-learning/helpers/common"
 	"go-learning/middlewares"
+	"go-learning/utils/common"
 )
 
 func Initiator(router *gin.Engine) {

@@ -25,3 +25,5 @@ go.work.sum
 .idea
 
 vendor
+
+log

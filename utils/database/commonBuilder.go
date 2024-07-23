@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/doug-martin/goqu/v9"
-	"go-learning/helpers/common"
+	"go-learning/utils/common"
 	"strings"
 )
 

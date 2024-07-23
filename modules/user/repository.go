@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/doug-martin/goqu/v9"
-	"go-learning/helpers/constant"
+	"go-learning/utils/constant"
 )
 
 type Repository interface {

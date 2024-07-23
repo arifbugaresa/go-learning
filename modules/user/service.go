@@ -3,8 +3,9 @@ package user
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"go-learning/helpers/common"
 	"go-learning/middlewares"
+	"go-learning/utils/common"
+	"go-learning/utils/logger"
 	"time"
 )
 
@@ -49,6 +50,7 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 	matches := common.CheckPassword(user.Password, userReq.Password)
 	if !matches {
 		err = errors.New("wrong username or password")
+		logger.ErrorWithCtx(ctx, nil, err)
 		return
 	}
 

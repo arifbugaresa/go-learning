@@ -3,11 +3,13 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"go-learning/databases/connection"
-	"go-learning/helpers/common"
+	"go-learning/middlewares"
+	"go-learning/utils/common"
 )
 
 func Initiator(router *gin.Engine) {
 	api := router.Group("/api/users")
+	api.Use(middlewares.Logging())
 	{
 		api.POST("/login", Login)
 		api.POST("/signup", SignUp)

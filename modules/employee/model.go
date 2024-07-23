@@ -1,6 +1,6 @@
 package employee
 
-import "go-learning/helpers/common"
+import "go-learning/utils/common"
 
 type Employee struct {
 	ID         uint   `db:"id"`

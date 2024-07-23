@@ -41,7 +41,7 @@ func GenerateSuccessResponseWithListData(ctx *gin.Context, message string, total
 func GenerateErrorResponse(ctx *gin.Context, message string) {
 	ctx.AbortWithStatusJSON(
 		http.StatusBadRequest,
-		GenerateErrorMessage(message),
+		GenerateErrorMessage(ctx, message),
 	)
 }
 
@@ -72,10 +72,13 @@ func GenerateSuccessMessageWithListData(message string, total int64, data interf
 	}
 }
 
-func GenerateErrorMessage(message string) APIResponse {
+func GenerateErrorMessage(ctx *gin.Context, message string) APIResponse {
 	return APIResponse{
 		Success: false,
 		Message: message,
 		Data:    nil,
+		AdditionalInfo: AdditionalInfo{
+			TraceId: ctx.GetString("trace_id"),
+		},
 	}
 }

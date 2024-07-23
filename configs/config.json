@@ -28,5 +28,11 @@
   "chat_gpt": {
     "app_key": ""
   },
-  "jwt_secret_key": "9wBhsNnwtq0AFs30V6B90KTDsAQ2oFW1VWcDpNVQ"
+  "jwt_secret_key": "9wBhsNnwtq0AFs30V6B90KTDsAQ2oFW1VWcDpNVQ",
+  "storage": {
+    "log": {
+      "error": "log/error",
+      "panic": "log/panic"
+    }
+  }
 }
