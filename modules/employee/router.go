@@ -4,10 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-learning/databases/connection"
 	"go-learning/helpers/common"
+	"go-learning/middlewares"
 )
 
 func Initiator(router *gin.Engine) {
 	api := router.Group("/api/employees")
+	api.Use(middlewares.JwtMiddleware())
 	{
 		api.GET("", ListEmployee)
 	}

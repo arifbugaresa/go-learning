@@ -6,7 +6,7 @@ import (
 )
 
 func Initiator() {
-	viper.SetConfigName("Config")
+	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath("./configs")
 
