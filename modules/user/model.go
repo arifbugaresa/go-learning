@@ -2,7 +2,9 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"go-learning/helpers/common"
+	"regexp"
 )
 
 type User struct {
@@ -54,6 +56,11 @@ func (s *SignUpRequest) ValidateSignUp() (err error) {
 
 	if s.ReTypePassword != s.Password {
 		return errors.New("password mismatch!")
+	}
+
+	re := regexp.MustCompile(fmt.Sprintf(`^(.{8,})$`))
+	if !re.MatchString(s.Password) {
+		return errors.New("please make sure that the password contains at least 8 character")
 	}
 
 	return nil

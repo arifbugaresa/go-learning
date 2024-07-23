@@ -31,3 +31,9 @@ func (d DateTimeFormat) String() string {
 const (
 	DateFormat DateTimeFormat = "2006-02-01"
 )
+
+type RegexFormat string
+
+func (d RegexFormat) String() string {
+	return string(d)
+}
