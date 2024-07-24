@@ -2,7 +2,7 @@
 -- +migrate StatementBegin
 
 CREATE TABLE roles (
-    id SERIAL       PRIMARY KEY,
+    id              SERIAL PRIMARY KEY,
     name            VARCHAR(256),
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by      VARCHAR(356) DEFAULT 'SYSTEM',
