@@ -9,8 +9,8 @@ type RedisSession struct {
 	Username   string            `json:"username"`
 	RoleId     int64             `json:"role_id"`
 	Permission []RedisPermission `json:"permission"`
-	LoginAt    time.Time         `json:"loginAt"`
-	ExpiredAt  time.Time         `json:"expiredAt"`
+	LoginAt    time.Time         `json:"login_at"`
+	ExpiredAt  time.Time         `json:"expired_at"`
 }
 
 type RedisPermission struct {
