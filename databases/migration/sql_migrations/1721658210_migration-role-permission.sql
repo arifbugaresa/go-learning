@@ -49,8 +49,3 @@ ALTER TABLE role_permissions
 INSERT INTO role_permissions (role_id, permission_id) VALUES (1,4);
 
 -- +migrate StatementEnd
-
-select p.access_code, p.grant_code from role_permissions rp
-join roles r on r.id = rp.role_id
-join permissions p on rp.permission_id = p.id
-where r.id = 1;
