@@ -4,21 +4,53 @@
 CREATE TABLE roles (
     id SERIAL       PRIMARY KEY,
     name            VARCHAR(256),
-    permission      INTEGER,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by      VARCHAR(356) DEFAULT 'SYSTEM',
     modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_by     VARCHAR(356) DEFAULT 'SYSTEM'
 );
 
+INSERT INTO roles (name) VALUES ('Role Admin');
+
 CREATE TABLE permissions (
     id              SERIAL PRIMARY KEY,
     name            VARCHAR(256),
-    permission      TEXT,
+    module          VARCHAR(256),
+    access_code     TEXT,
+    grant_code      VARCHAR(1),
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by      VARCHAR(356) DEFAULT 'SYSTEM',
     modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_by     VARCHAR(356) DEFAULT 'SYSTEM'
-)
+);
+
+ALTER TABLE permissions
+    ADD CONSTRAINT uq_accesscode_grantcode UNIQUE (access_code,grant_code);
+
+insert into permissions (name, module, access_code, grant_code) values
+    ('Permission Read Employee', 'employee', 'employee', 'r'),
+    ('Permission Update Employee', 'employee', 'employee', 'u'),
+    ('Permission Delete Employee', 'employee', 'employee', 'd'),
+    ('Permission Create Employee', 'employee', 'employee', 'c');
+
+CREATE TABLE role_permissions (
+    id              SERIAL PRIMARY KEY,
+    role_id         INTEGER NOT NULL,
+    permission_id   INTEGER NOT NULL,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by      VARCHAR(356) DEFAULT 'SYSTEM',
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_by     VARCHAR(356) DEFAULT 'SYSTEM'
+);
+
+ALTER TABLE role_permissions
+    ADD CONSTRAINT uq_roleid_permissionid UNIQUE (role_id,permission_id);
+
+INSERT INTO role_permissions (role_id, permission_id) VALUES (1,4);
 
 -- +migrate StatementEnd
+
+select p.access_code, p.grant_code from role_permissions rp
+join roles r on r.id = rp.role_id
+join permissions p on rp.permission_id = p.id
+where r.id = 1;

@@ -8,11 +8,15 @@ import (
 )
 
 func Initiator(router *gin.Engine) {
+	var (
+		GetListPermission = map[string]string{"employee": "r"}
+	)
+
 	api := router.Group("/api/employees")
 	api.Use(middlewares.JwtMiddleware())
 	api.Use(middlewares.Logging())
 	{
-		api.GET("", ListEmployee)
+		api.GET("", middlewares.Permission(GetListPermission), ListEmployee)
 	}
 }
 

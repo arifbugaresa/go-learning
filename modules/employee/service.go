@@ -1,7 +1,9 @@
 package employee
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"go-learning/utils/logger"
 )
 
 type Service interface {
@@ -25,6 +27,8 @@ func (service *userService) GetListEmployee(ctx *gin.Context) (result []GetEmplo
 
 	err = ctx.ShouldBindJSON(&req)
 	if err != nil {
+		err = errors.New("failed to parse request body")
+		logger.ErrorWithCtx(ctx, nil, err)
 		return
 	}
 

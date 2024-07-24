@@ -11,6 +11,7 @@ type User struct {
 	ID       int64  `db:"id"`
 	Username string `db:"username"`
 	Password string `db:"password"`
+	RoleId   int64  `db:"role_id"`
 }
 
 type LoginRequest struct {

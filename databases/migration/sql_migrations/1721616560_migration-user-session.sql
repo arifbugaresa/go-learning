@@ -8,7 +8,7 @@ CREATE TABLE users (
     full_name       VARCHAR(256),
     email           VARCHAR(256),
     user_status     INTEGER,
-    user_role       INTEGER,
+    role_id         INTEGER,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by      VARCHAR(356) DEFAULT 'SYSTEM',
     modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

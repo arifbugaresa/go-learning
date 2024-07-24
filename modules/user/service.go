@@ -1,6 +1,7 @@
 package user
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"go-learning/middlewares"
@@ -25,8 +26,12 @@ func NewService(repository Repository) Service {
 }
 
 func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse, err error) {
-	var userReq LoginRequest
+	var (
+		userReq         LoginRequest
+		redisPermission []middlewares.RedisPermission
+	)
 
+	// validation request section
 	err = ctx.ShouldBind(&userReq)
 	if err != nil {
 		return
@@ -37,7 +42,8 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return
 	}
 
-	user, err := service.repository.Login(userReq)
+	// user section
+	user, err := service.repository.Login(ctx, userReq)
 	if err != nil {
 		return
 	}
@@ -59,12 +65,37 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return
 	}
 
-	middlewares.DummyRedis[jwtToken] = middlewares.UserLoginRedis{
-		UserId:    0,
-		Username:  user.Username,
-		LoginAt:   time.Now(),
-		ExpiredAt: time.Now().Add(time.Minute * 1),
+	// get permission from user data
+	permissions, err := service.repository.GetListPermissionByRoleId(ctx, user)
+	if err != nil {
+		err = errors.New("failed get permissions")
+		return
 	}
+
+	for _, permission := range permissions {
+		redisPermission = append(redisPermission, middlewares.RedisPermission{
+			AccessCode:  permission.AccessCode,
+			AccessGrant: permission.GrantCode,
+		})
+	}
+
+	// redis section
+	redisSession := middlewares.RedisSession{
+		UserId:     user.ID,
+		Username:   user.Username,
+		LoginAt:    time.Now(),
+		RoleId:     user.RoleId,
+		Permission: redisPermission,
+		ExpiredAt:  time.Now().Add(time.Minute * 3),
+	}
+
+	redisSessionStr, err := json.Marshal(redisSession)
+	if err != nil {
+		logger.ErrorWithCtx(ctx, nil, err)
+		return result, err
+	}
+
+	middlewares.DummyRedis[jwtToken] = string(redisSessionStr)
 
 	result.Token = jwtToken
 

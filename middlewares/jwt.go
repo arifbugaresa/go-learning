@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -22,18 +23,25 @@ func JwtMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		data, ok := DummyRedis[tokenString]
+		redisSessionStr, ok := DummyRedis[tokenString]
 		if !ok {
 			common.GenerateErrorResponse(c, "token invalid, please log in again")
 			return
 		}
 
-		if time.Now().After(data.ExpiredAt) {
+		var redisSession RedisSession
+		err = json.Unmarshal([]byte(redisSessionStr), &redisSession)
+		if err != nil {
+			common.GenerateErrorResponse(c, "failed unmarshal redis session")
+			return
+		}
+
+		if time.Now().After(redisSession.ExpiredAt) {
 			common.GenerateErrorResponse(c, "token expired, please log in again")
 			return
 		}
 
-		c.Set("auth", data)
+		c.Set("redis_session", redisSession)
 
 		c.Next()
 	}
