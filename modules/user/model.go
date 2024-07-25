@@ -9,6 +9,7 @@ import (
 
 type User struct {
 	ID       int64  `db:"id"`
+	FullName string `db:"full_name"`
 	Username string `db:"username"`
 	Password string `db:"password"`
 }
