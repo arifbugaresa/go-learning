@@ -1,114 +1,40 @@
 # go-learning
-long-term project to learn the go programming language.
+Long-term project to learn the Go programming language with [Arif Bugaresa](https://www.linkedin.com/in/arifbugaresa/)
 
-## Docs
-Unit testing adalah salah satu praktik penting dalam pengembangan perangkat lunak untuk memastikan bahwa setiap unit kode (seperti fungsi atau metode) berfungsi sesuai dengan yang diharapkan. Di Go (Golang), unit testing dapat dilakukan menggunakan paket bawaan testing. Berikut adalah contoh sederhana penerapan unit testing di Golang.
+## Guide
+#### Basic
+* [TCK-BSC-001](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-001) - introduction variable, constant, data type and common package 
+* [TCK-BSC-002](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-002) - operator and conditional 
+* [TCK-BSC-003](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-003) - array, slice, map and looping
+* [TCK-BSC-004](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-004) - function
+* [TCK-BSC-005](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-005) - pointer
+* [TCK-BSC-006](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-006) - struct & method
+* [TCK-BSC-007](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-007) - interface
+* [TCK-BSC-008](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-008) - package & import
+* [TCK-BSC-009](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-009) - defer, panic, recover, error
+* [TCK-BSC-010](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-010) - goroutines & channel
+* [TCK-BSC-011](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-011) - json data & web sever
+* [TCK-BSC-012](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-012) - middleware
 
-### Instalasi stretchr/testify
-Anda bisa menginstal stretchr/testify dengan perintah berikut:
+#### Intermediete
+* [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env file json (viper)
+* [TCK-IMD-002](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-002) - unit test (testify)
+* [TCK-IMD-003](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-003) - mocking service & repo (testify)
+* [TCK-IMD-004](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-004) - basic pattern using gin (gin framework)
+* [TCK-IMD-005](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-005) - working with jwt middleware (gin framework)
+* [TCK-IMD-006](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-006) - excel (excelize)
+* [TCK-IMD-007](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-OO7) - protobuf
 
-```sh
-go get https://github.com/stretchr/testify
-```
+#### REST API
+* [TCK-IMD-010](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-O10) - working with migration postgres (rubenv/sql-migrate)
+* [TCK-IMD-013](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-013) - working with query native (postgres)
+* [TCK-IMD-009](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-009) - working with query builder (goqu)
+* [TCK-IMD-014](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-014) - working with query builder (gorm)
+* [TCK-IMD-011](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-011) - working with log error (logrus)
+* [TCK-IMD-012](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with role and permission api (gin, goqu, logrus)
 
-
-Kita bisa menggunakan library seperti stretchr/testify untuk memperluas kapabilitas testing di Go. stretchr/testify menyediakan berbagai fitur yang memudahkan penulisan test case
-
-Mari kita buat contoh sederhana dengan fungsi yang ingin diuji.
-
-```
-func Addition(a, b int64) int64 {
-	return a + b
-}
-```
-Berikut ini penjelasan lebih detail penggunaan library ini di project kali ini.
-
-##### Package Import
-```
-import (
-	"github.com/stretchr/testify/assert"
-	"testing"
-)
-```
-
-Kode ini mengimpor dua package:
-
-* github.com/stretchr/testify/assert 
-* testing
-
-##### Struct Definition
-```
-type TestCases struct {
-	Name     string
-	Actual   interface{}
-	Expected interface{}
-	Data
-}
-```
-
-Nama atau deskripsi test case.
-Actual adalah nilai hasil yang sebenarnya dari eksekusi fungsi yang diuji.
-Expected adalah nilai hasil yang diharapkan dari eksekusi fungsi yang diuji.
-Data adalah eEbedded struct yang berisi data yang diperlukan untuk test case.
-
-##### Test Function
-```
-func TestAddition(t *testing.T) {
-	testCases := []TestCases{
-		{
-			Name: "Success - Normal Addition 1",
-			Data: Data{
-				Number1: 10,
-				Number2: 2,
-			},
-			Expected: int64(12),
-		},
-		{
-			Name: "Success - Normal Addition 2",
-			Data: Data{
-				Number1: 1,
-				Number2: 2,
-			},
-			Expected: int64(3),
-		},
-		{
-			Name: "Success - Normal Addition 3",
-			Data: Data{
-				Number1: -10,
-				Number2: 2,
-			},
-			Expected: int64(-8),
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.Name, func(t *testing.T) {
-			tc.Actual = Addition(tc.Number1, tc.Number2)
-
-			assert.Equal(t, tc.Expected, tc.Actual)
-		})
-	}
-}
-
-```
-
-##### Pendefinisian Test Cases
-* testCases adalah slice dari TestCases yang berisi berbagai test case untuk fungsi Addition. Masing-masing test case memiliki nama, data (dua angka untuk ditambahkan), dan hasil yang diharapkan.
-
-##### Looping Melalui Test Cases
-* for _, tc := range testCases { ... } akan melakukan iterasi melalui setiap test case.
-* t.Run(tc.Name, func(t *testing.T) { ... }) menjalankan setiap test case dalam subtest yang dinamai sesuai dengan tc.Name.
-
-##### Eksekusi Fungsi
-* tc.Actual = Addition(tc.Number1, tc.Number2) menjalankan fungsi Addition (yang diasumsikan sudah didefinisikan di tempat lain) dengan dua angka dari Data struct, dan menyimpan hasilnya dalam tc.Actual.
-##### Assertions
-* assert.Equal(t, tc.Expected, tc.Actual) memeriksa apakah nilai yang dihasilkan (tc.Actual) sesuai dengan nilai yang diharapkan (tc.Expected). Jika tidak, maka test case akan gagal dan menampilkan pesan kesalahan.
-
-setelah semua siap digunakan, kita bisa uji coba unit test kita dengan menggunakan perintah
-```
-go test -v ./...
-```
+## Staying up to date
+To keep updating new case studies, You can fork or clone this project.
 
 ## License
-Project ini belum memiliki lisensi resmi. Anda bisa melakukan fork untuk clone project ini
-
+This project does not have an official license yet.
