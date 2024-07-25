@@ -2,7 +2,7 @@
 -- +migrate StatementBegin
 
 create table employees (
-    id SERIAL       PRIMARY KEY,
+    id              SERIAL PRIMARY KEY,
     full_name       VARCHAR(50) NOT NULL,
     email           TEXT UNIQUE NOT NULL,
     age             INT NOT NULL,
