@@ -25,6 +25,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-IMD-006](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-006) - excel (excelize)
 * [TCK-IMD-007](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-OO7) - protobuf
 * [TCK-IMD-010](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-O10) - working with migration postgres (rubenv/sql-migrate)
+* [TCK-IMD-013](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-013) - working with query native (postgres)
 * [TCK-IMD-009](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-009) - working with query builder (goqu)
 * [TCK-IMD-011](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-011) - working with log error (logrus)
 * [TCK-IMD-012](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with role and permission api (gin, goqu, logrus)
