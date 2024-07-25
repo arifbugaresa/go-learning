@@ -1,44 +1,40 @@
 # go-learning
-#### long-term project to learn the go programming language.
+Long-term project to learn the Go programming language with [Arif Bugaresa](https://www.linkedin.com/in/arifbugaresa/)
 
-Example Golang project for reading env files.
+## Guide
+#### Basic
+* [TCK-BSC-001](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-001) - introduction variable, constant, data type and common package 
+* [TCK-BSC-002](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-002) - operator and conditional 
+* [TCK-BSC-003](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-003) - array, slice, map and looping
+* [TCK-BSC-004](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-004) - function
+* [TCK-BSC-005](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-005) - pointer
+* [TCK-BSC-006](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-006) - struct & method
+* [TCK-BSC-007](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-007) - interface
+* [TCK-BSC-008](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-008) - package & import
+* [TCK-BSC-009](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-009) - defer, panic, recover, error
+* [TCK-BSC-010](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-010) - goroutines & channel
+* [TCK-BSC-011](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-011) - json data & web sever
+* [TCK-BSC-012](https://github.com/arifbugaresa/go-learning/tree/TCK-BSC-012) - middleware
 
-## External Lib
+#### Intermediete
+* [TCK-IMD-001](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-001) - reading env file json (viper)
+* [TCK-IMD-002](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-002) - unit test (testify)
+* [TCK-IMD-003](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-003) - mocking service & repo (testify)
+* [TCK-IMD-004](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-004) - basic pattern using gin (gin framework)
+* [TCK-IMD-005](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-005) - working with jwt middleware (gin framework)
+* [TCK-IMD-006](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-006) - excel (excelize)
+* [TCK-IMD-007](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-OO7) - protobuf
 
-```sh
-go go get github.com/spf13/viper
-```
-## What is Viper?
+#### REST API
+* [TCK-IMD-010](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-O10) - working with migration postgres (rubenv/sql-migrate)
+* [TCK-IMD-013](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-013) - working with query native (postgres)
+* [TCK-IMD-009](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-009) - working with query builder (goqu)
+* [TCK-IMD-014](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-014) - working with query builder (gorm)
+* [TCK-IMD-011](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-011) - working with log error (logrus)
+* [TCK-IMD-012](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with role and permission api (gin, goqu, logrus)
 
-Viper is a complete configuration solution for Go applications including [12-Factor apps](https://12factor.net/#the_twelve_factors).
-It is designed to work within an application, and can handle all types of configuration needs
-and formats. It supports:
+## Staying up to date
+To keep updating new case studies, You can fork or clone this project.
 
-* setting defaults
-* reading from JSON, TOML, YAML, HCL, envfile and Java properties config files
-* live watching and re-reading of config files (optional)
-* reading from environment variables
-* reading from remote config systems (etcd or Consul), and watching changes
-* reading from command line flags
-* reading from buffer
-* setting explicit values
-
-Viper can be thought of as a registry for all of your applications configuration needs.
-
-
-## Why Viper?
-
-When building a modern application, you don’t want to worry about
-configuration file formats; you want to focus on building awesome software.
-Viper is here to help with that.
-
-Viper does the following for you:
-
-1. Find, load, and unmarshal a configuration file in JSON, TOML, YAML, HCL, INI, envfile or Java properties formats.
-2. Provide a mechanism to set default values for your different configuration options.
-3. Provide a mechanism to set override values for options specified through command line flags.
-4. Provide an alias system to easily rename parameters without breaking existing code.
-5. Make it easy to tell the difference between when a user has provided a command line or config file which is the same as the default.
-
-
-
+## License
+This project does not have an official license yet.
