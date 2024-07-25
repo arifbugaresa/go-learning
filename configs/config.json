@@ -18,7 +18,7 @@
       "postgres": {
         "db_host": "localhost",
         "db_port": 5433,
-        "db_name": "go_learning",
+        "db_name": "go_learning_sql",
         "db_user": "root",
         "db_password": "password",
         "db_engine": "postgres"

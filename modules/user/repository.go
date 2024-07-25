@@ -2,8 +2,6 @@ package user
 
 import (
 	"database/sql"
-	"errors"
-	"github.com/doug-martin/goqu/v9"
 	"go-learning/helpers/constant"
 )
 
@@ -23,39 +21,32 @@ func NewRepository(database *sql.DB) Repository {
 }
 
 func (r *userRepository) Login(user LoginRequest) (result User, err error) {
-	conn := goqu.New(constant.PostgresDialect.String(), r.db)
-	dialect := conn.From(constant.UserTableName.String()).
-		Select(
-			goqu.C("id"),
-			goqu.C("password"),
-		).
-		Where(
-			goqu.I("username").Eq(user.Username),
-		)
+	sqlStmt := "SELECT id, password FROM " + constant.UserTableName.String() + " WHERE username = $1"
 
-	_, err = dialect.ScanStruct(&result)
-	if err != nil {
-		err = errors.New("failed login")
-		return
+	params := []interface{}{
+		user.Username,
 	}
 
-	return
+	err = r.db.QueryRow(sqlStmt, params...).Scan(&result.ID, &result.Password)
+	if err != nil && err != sql.ErrNoRows {
+		return result, err
+	}
+
+	return result, nil
 }
 
 func (r *userRepository) SignUp(user User) (err error) {
-	conn := goqu.New(constant.PostgresDialect.String(), r.db)
-	dataset := conn.Insert(constant.UserTableName.String()).Rows(
-		goqu.Record{
-			"username":  user.Username,
-			"full_name": user.Username,
-			"password":  user.Password,
-		},
-	)
+	sqlStmt := "INSERT INTO " + constant.UserTableName.String() + " (username, full_name, password) VALUES ($1, $2, $3)"
 
-	_, err = dataset.Executor().Exec()
+	params := []interface{}{
+		user.Username,
+		user.Username,
+		user.Password,
+	}
+
+	_, err = r.db.Exec(sqlStmt, params...)
 	if err != nil {
-		err = errors.New("failed sign up user")
-		return err
+		return
 	}
 
 	return nil

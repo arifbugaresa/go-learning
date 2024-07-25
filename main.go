@@ -6,7 +6,6 @@ import (
 	"go-learning/databases/connection"
 	"go-learning/databases/migration"
 	"go-learning/modules/car"
-	"go-learning/modules/employee"
 	"go-learning/modules/user"
 )
 
@@ -26,7 +25,6 @@ func InitiateRouter() {
 
 	car.Initiator(router)
 	user.Initiator(router)
-	employee.Initiator(router)
 
 	router.Run(":8080")
 }
