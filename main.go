@@ -13,9 +13,9 @@ func main() {
 	configs.Initiator()
 
 	connection.Initiator()
-	defer connection.DBConnections.Close()
+	defer connection.SqlDBConnections.Close()
 
-	migration.Initiator(connection.DBConnections)
+	migration.Initiator(connection.SqlDBConnections)
 
 	InitiateRouter()
 }

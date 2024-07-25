@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	ID       int64  `db:"id"`
-	FullName string `db:"full_name"`
-	Username string `db:"username"`
-	Password string `db:"password"`
+	ID       int64  `gorm:"primaryKey;autoIncrement"`
+	FullName string `gorm:"column:full_name;size:255"`
+	Username string `gorm:"column:username;size:255"`
+	Password string `gorm:"column:password;size:255"`
 }
 
 type LoginRequest struct {

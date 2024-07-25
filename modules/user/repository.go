@@ -1,8 +1,8 @@
 package user
 
 import (
-	"database/sql"
-	"go-learning/helpers/constant"
+	"errors"
+	"gorm.io/gorm"
 )
 
 type Repository interface {
@@ -14,24 +14,18 @@ type Repository interface {
 }
 
 type userRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewRepository(database *sql.DB) Repository {
+func NewRepository(database *gorm.DB) Repository {
 	return &userRepository{
 		db: database,
 	}
 }
 
 func (r *userRepository) Login(user LoginRequest) (result User, err error) {
-	sqlStmt := "SELECT id, password FROM " + constant.UserTableName.String() + " WHERE username = $1"
-
-	params := []interface{}{
-		user.Username,
-	}
-
-	err = r.db.QueryRow(sqlStmt, params...).Scan(&result.ID, &result.Password)
-	if err != nil && err != sql.ErrNoRows {
+	err = r.db.Where("username = ?", user.Username).First(&result).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return result, err
 	}
 
@@ -39,68 +33,36 @@ func (r *userRepository) Login(user LoginRequest) (result User, err error) {
 }
 
 func (r *userRepository) SignUp(user User) (err error) {
-	sqlStmt := "INSERT INTO " + constant.UserTableName.String() + " (username, full_name, password) VALUES ($1, $2, $3)"
-
-	params := []interface{}{
-		user.Username,
-		user.Username,
-		user.Password,
-	}
-
-	_, err = r.db.Exec(sqlStmt, params...)
+	err = r.db.Create(&user).Error
 	if err != nil {
-		return
+		return err
 	}
 
 	return nil
 }
 
 func (r *userRepository) Update(user User) (err error) {
-	sqlStmt := "UPDATE " + constant.UserTableName.String() + " SET full_name = $1 WHERE username = $2"
-
-	params := []interface{}{
-		user.FullName,
-		user.Username,
-	}
-
-	_, err = r.db.Exec(sqlStmt, params...)
+	err = r.db.Model(&User{}).Where("username = ?", user.Username).Update("full_name", user.FullName).Error
 	if err != nil {
-		return
+		return err
 	}
 
 	return nil
 }
 
 func (r *userRepository) Delete(user User) (err error) {
-	sqlStmt := "DELETE FROM " + constant.UserTableName.String() + " WHERE username = $1"
-
-	params := []interface{}{
-		user.Username,
-	}
-
-	_, err = r.db.Exec(sqlStmt, params...)
+	err = r.db.Where("username = ?", user.Username).Delete(&User{}).Error
 	if err != nil {
-		return
+		return err
 	}
 
 	return nil
 }
 
 func (r *userRepository) GetList() (users []User, err error) {
-	sqlStmt := "SELECT username, full_name, password FROM " + constant.UserTableName.String()
-
-	rows, err := r.db.Query(sqlStmt)
+	err = r.db.Find(&users).Error
 	if err != nil {
 		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var user User
-		if err = rows.Scan(&user.Username, &user.FullName, &user.Password); err != nil {
-			return nil, err
-		}
-		users = append(users, user)
 	}
 
 	return users, nil
