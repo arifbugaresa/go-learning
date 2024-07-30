@@ -32,7 +32,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-IMD-014](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-014) - working with query builder (gorm)
 * [TCK-IMD-011](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-011) - working with log error (logrus)
 * [TCK-IMD-012](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with role and permission api (gin, goqu, logrus)
-* [TCK-IMD-015](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with api documentation (swagger)
+* [TCK-IMD-015](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-015) - working with api documentation (swagger)
 
 ## Staying up to date
 To keep updating new case studies, You can fork or clone this project.
