@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go-learning/utils/common"
+	"go-learning/utils/logger"
+	"go-learning/utils/redis"
 	"strings"
 	"time"
 )
@@ -17,16 +19,32 @@ type Claims struct {
 
 func JwtMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var (
+			redisSessionStr string
+			ok              bool
+		)
+
 		tokenString, err := GetJwtTokenFromHeader(c)
 		if err != nil {
 			common.GenerateErrorResponse(c, err.Error())
 			return
 		}
 
-		redisSessionStr, ok := DummyRedis[tokenString]
-		if !ok {
-			common.GenerateErrorResponse(c, "token invalid, please log in again")
-			return
+		// select mode app
+		if viper.GetString("app.mode") == "development" {
+			redisSessionStr, ok = DummyRedis[tokenString]
+			if !ok {
+				common.GenerateErrorResponse(c, "token invalid, please log in again")
+				return
+			}
+		} else {
+			redisSessionStr, err = redis.RedisClient.Get(c, tokenString).Result()
+			if err != nil {
+				err = errors.New("redis error")
+				logger.ErrorWithCtx(c, nil, err)
+				common.GenerateErrorResponse(c, err.Error())
+				return
+			}
 		}
 
 		var redisSession RedisSession
@@ -40,8 +58,6 @@ func JwtMiddleware() gin.HandlerFunc {
 			common.GenerateErrorResponse(c, "token expired, please log in again")
 			return
 		}
-
-		c.Set("redis_session", redisSession)
 
 		c.Next()
 	}

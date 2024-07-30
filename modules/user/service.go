@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"go-learning/middlewares"
 	"go-learning/utils/common"
 	"go-learning/utils/logger"
+	"go-learning/utils/redis"
 	"time"
 )
 
@@ -95,7 +97,17 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return result, err
 	}
 
-	middlewares.DummyRedis[jwtToken] = string(redisSessionStr)
+	// select mode app
+	if viper.GetString("app.mode") == "development" {
+		middlewares.DummyRedis[jwtToken] = string(redisSessionStr)
+	} else {
+		err = redis.RedisClient.Set(ctx, jwtToken, string(redisSessionStr), 0).Err()
+		if err != nil {
+			err = errors.New("failed set value redis")
+			logger.ErrorWithCtx(ctx, nil, err)
+			return
+		}
+	}
 
 	result.Token = jwtToken
 

@@ -1,7 +1,7 @@
 {
   "name": "Enterprise Project",
   "app": {
-    "mode": "development",
+    "mode": "staging",
     "base_url": "localhost",
     "port": ":8080"
   },
