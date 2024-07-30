@@ -20,6 +20,15 @@ func Initiator(router *gin.Engine) {
 	}
 }
 
+// ListEmployee godoc
+// @Tags Employee
+// @Summary Get List Employee
+// @Description	This endpoint is used for get all employee
+// @Accept json
+// @Produce json
+// @Success 200 {object} common.APIResponse{data=GetEmployeeResponse} "Success"
+// @Failure 500	{object} common.APIResponse "Failed"
+// @Router /api/employees [get]
 func ListEmployee(ctx *gin.Context) {
 	var (
 		empRepo = NewRepository(connection.DBConnections)

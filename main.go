@@ -9,8 +9,13 @@ import (
 	"go-learning/modules/employee"
 	"go-learning/modules/user"
 	"go-learning/utils/logger"
+	"go-learning/utils/swagger"
 )
 
+// @title Swagger Documentation
+// @version 1.1.2
+// @description This is documentation go_learning.
+// @host localhost:8080
 func main() {
 	configs.Initiator()
 
@@ -26,6 +31,8 @@ func main() {
 
 func InitiateRouter() {
 	router := gin.Default()
+
+	swagger.Initiator(router)
 
 	car.Initiator(router)
 	user.Initiator(router)

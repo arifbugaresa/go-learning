@@ -27,3 +27,5 @@ go.work.sum
 vendor
 
 log
+
+docs

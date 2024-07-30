@@ -16,6 +16,16 @@ func Initiator(router *gin.Engine) {
 	}
 }
 
+// Login godoc
+// @Tags User
+// @Summary Login
+// @Description	This endpoint is used for user login
+// @Accept json
+// @Produce json
+// @Param login body LoginRequest true "Request"
+// @Success 200 {object} common.APIResponse{data=LoginResponse} "Success"
+// @Failure 500	{object} common.APIResponse "Failed"
+// @Router /api/users/login [post]
 func Login(ctx *gin.Context) {
 	var (
 		userRepo = NewRepository(connection.DBConnections)
@@ -31,6 +41,16 @@ func Login(ctx *gin.Context) {
 	common.GenerateSuccessResponseWithData(ctx, "successfully login", token)
 }
 
+// SignUp godoc
+// @Tags User
+// @Summary Sign Up
+// @Description	This endpoint is used for user sign up
+// @Accept json
+// @Produce json
+// @Param login body SignUpRequest true "Request"
+// @Success 200 {object} common.APIResponse "Success"
+// @Failure 500	{object} common.APIResponse "Failed"
+// @Router /api/users/signup [post]
 func SignUp(ctx *gin.Context) {
 	var (
 		userRepo = NewRepository(connection.DBConnections)
