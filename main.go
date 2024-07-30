@@ -10,6 +10,7 @@ import (
 	"go-learning/modules/user"
 	"go-learning/utils/logger"
 	"go-learning/utils/redis"
+	"go-learning/utils/scheduler"
 	"go-learning/utils/swagger"
 )
 
@@ -21,6 +22,8 @@ func main() {
 	configs.Initiator()
 
 	logger.Initiator()
+
+	scheduler.Initiator()
 
 	redis.Initiator()
 
