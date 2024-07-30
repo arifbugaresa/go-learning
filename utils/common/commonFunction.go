@@ -1,6 +1,8 @@
 package common
 
 import (
+	"errors"
+	"go-learning/utils/logger"
 	"math/rand"
 	"reflect"
 )
@@ -35,4 +37,14 @@ func GenerateRandomString(n int) string {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
 	return string(b)
+}
+
+func GetMessage(message string) (msg string, err error) {
+	if IsEmptyField(message) {
+		logger.ErrorWithCtx(nil, nil, message)
+		err = errors.New("empty message")
+		return
+	}
+
+	return message, nil
 }
