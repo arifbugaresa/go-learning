@@ -23,6 +23,7 @@ const (
 	RoleTableName           TableName = "roles"
 	PermissionTableName     TableName = "permissions"
 	RolePermissionTableName TableName = "role_permissions"
+	EmailTemplateTableName  TableName = "email_templates"
 )
 
 type DateTimeFormat string
@@ -38,5 +39,16 @@ const (
 type RegexFormat string
 
 func (d RegexFormat) String() string {
+	return string(d)
+}
+
+type EmailTemplate string
+
+const (
+	SignUpEmailTemplate EmailTemplate = "signuptemplate"
+	LoginEmailTemplate  EmailTemplate = "logintemplate"
+)
+
+func (d EmailTemplate) String() string {
 	return string(d)
 }

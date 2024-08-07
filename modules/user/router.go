@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-learning/databases/connection"
 	"go-learning/middlewares"
+	"go-learning/modules/notification"
 	"go-learning/utils/common"
 )
 
@@ -28,8 +29,9 @@ func Initiator(router *gin.Engine) {
 // @Router /api/users/login [post]
 func Login(ctx *gin.Context) {
 	var (
-		userRepo = NewRepository(connection.DBConnections)
-		userSrv  = NewService(userRepo)
+		userRepo  = NewRepository(connection.DBConnections)
+		emailRepo = notification.NewRepository(connection.DBConnections)
+		userSrv   = NewService(userRepo, emailRepo)
 	)
 
 	token, err := userSrv.LoginService(ctx)
@@ -53,8 +55,9 @@ func Login(ctx *gin.Context) {
 // @Router /api/users/signup [post]
 func SignUp(ctx *gin.Context) {
 	var (
-		userRepo = NewRepository(connection.DBConnections)
-		userSrv  = NewService(userRepo)
+		userRepo  = NewRepository(connection.DBConnections)
+		emailRepo = notification.NewRepository(connection.DBConnections)
+		userSrv   = NewService(userRepo, emailRepo)
 	)
 
 	err := userSrv.SignUpService(ctx)

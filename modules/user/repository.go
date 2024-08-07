@@ -5,9 +5,9 @@ import (
 	"errors"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/gin-gonic/gin"
-	"go-learning/modules/permission"
 	"go-learning/utils/constant"
 	"go-learning/utils/logger"
+	"go-learning/utils/permission"
 )
 
 type Repository interface {

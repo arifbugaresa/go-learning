@@ -34,5 +34,13 @@
       "error": "log/error",
       "panic": "log/panic"
     }
+  },
+  "notification":{
+    "email": {
+      "sender":"email@gmail.com",
+      "password": "password",
+      "host": "smtp.gmail.com",
+      "address": "smtp.gmail.com:587"
+    }
   }
 }
