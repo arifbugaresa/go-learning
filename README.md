@@ -34,7 +34,8 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-IMD-012](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-012) - working with role and permission api (gin, goqu, logrus)
 * [TCK-IMD-015](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-015) - working with api documentation (swagger)
 * [TCK-IMD-016](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-016) - working with user session (redis)
-* [TCK-IMD-017](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-017) - working with scheduler (cron)
+* [TCK-IMD-017](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-017) - working with scheduler (cron)go 
+* [TCK-IMD-018](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-018) - working with email notification (gomail)
 
 ## Staying up to date
 To keep updating new case studies, You can fork or clone this project.
