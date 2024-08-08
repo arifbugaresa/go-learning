@@ -1,6 +1,6 @@
-package notification
+package email
 
-type Email struct {
+type EmailTemplate struct {
 	Id         int64  `db:"id"`
 	Code       string `db:"code"`
 	Name       string `db:"name"`

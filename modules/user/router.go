@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-learning/databases/connection"
 	"go-learning/middlewares"
-	"go-learning/modules/notification"
 	"go-learning/utils/common"
+	"go-learning/utils/email"
 )
 
 func Initiator(router *gin.Engine) {
@@ -30,7 +30,7 @@ func Initiator(router *gin.Engine) {
 func Login(ctx *gin.Context) {
 	var (
 		userRepo  = NewRepository(connection.DBConnections)
-		emailRepo = notification.NewRepository(connection.DBConnections)
+		emailRepo = email.NewRepository(connection.DBConnections)
 		userSrv   = NewService(userRepo, emailRepo)
 	)
 
@@ -56,7 +56,7 @@ func Login(ctx *gin.Context) {
 func SignUp(ctx *gin.Context) {
 	var (
 		userRepo  = NewRepository(connection.DBConnections)
-		emailRepo = notification.NewRepository(connection.DBConnections)
+		emailRepo = email.NewRepository(connection.DBConnections)
 		userSrv   = NewService(userRepo, emailRepo)
 	)
 

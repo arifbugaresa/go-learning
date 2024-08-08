@@ -1,4 +1,4 @@
-package notification
+package email
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 )
 
 type Repository interface {
-	GetEmailTemplate(ctx *gin.Context, code string) (Email, error)
+	GetEmailTemplate(ctx *gin.Context, code string) (EmailTemplate, error)
 }
 
 type emailRepository struct {
@@ -22,7 +22,7 @@ func NewRepository(dbParam *sql.DB) Repository {
 	}
 }
 
-func (r *emailRepository) GetEmailTemplate(ctx *gin.Context, code string) (res Email, err error) {
+func (r *emailRepository) GetEmailTemplate(ctx *gin.Context, code string) (res EmailTemplate, err error) {
 	conn := goqu.New(constant.PostgresDialect.String(), r.db)
 	dialect := conn.From(constant.EmailTemplateTableName.String()).
 		Select(

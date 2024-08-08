@@ -16,7 +16,7 @@ type Notification interface {
 	SendEmail(ctx *gin.Context)
 }
 
-type Email struct {
+type EmailNotif struct {
 	Sender   string
 	Receiver []string
 	Subject  string
@@ -31,7 +31,7 @@ type Authentication struct {
 	Host     string
 }
 
-func (e *Email) SetAuth() Authentication {
+func (e *EmailNotif) SetAuth() Authentication {
 	return Authentication{
 		Identity: "",
 		Username: viper.GetString("notification.email.sender"),
@@ -40,7 +40,7 @@ func (e *Email) SetAuth() Authentication {
 	}
 }
 
-func (e *Email) SendEmail(ctx *gin.Context) {
+func (e *EmailNotif) SendEmail(ctx *gin.Context) {
 	go func() {
 		auth := e.SetAuth()
 

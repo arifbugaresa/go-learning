@@ -45,8 +45,8 @@ func (d RegexFormat) String() string {
 type EmailTemplate string
 
 const (
-	SignUpEmailTemplate EmailTemplate = "signuptemplate"
-	LoginEmailTemplate  EmailTemplate = "logintemplate"
+	SignUpEmailTemplate EmailTemplate = "sign_up_email_template"
+	LoginEmailTemplate  EmailTemplate = "login_email_template"
 )
 
 func (d EmailTemplate) String() string {
