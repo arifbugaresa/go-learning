@@ -52,3 +52,25 @@ const (
 func (d EmailTemplate) String() string {
 	return string(d)
 }
+
+type RabbitMqKey string
+
+func (r RabbitMqKey) String() string {
+	return string(r)
+}
+
+const (
+	EmailRabbitMqKey RabbitMqKey = "email"
+)
+
+type AppMode string
+
+func (d AppMode) String() string {
+	return string(d)
+}
+
+const (
+	DevelopmentMode AppMode = "development"
+	StagingMode     AppMode = "staging"
+	ProductionMode  AppMode = "production"
+)

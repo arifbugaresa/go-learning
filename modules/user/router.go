@@ -6,13 +6,22 @@ import (
 	"go-learning/middlewares"
 	"go-learning/utils/common"
 	"go-learning/utils/email"
+	"go-learning/utils/rabbitmq"
 )
 
-func Initiator(router *gin.Engine) {
+func Initiator(router *gin.Engine, rabbitMqConn *rabbitmq.RabbitMQ) {
+	var (
+		userRepo  = NewRepository(connection.DBConnections)
+		emailRepo = email.NewRepository(connection.DBConnections)
+		userSrv   = NewService(userRepo, emailRepo)
+	)
+
 	api := router.Group("/api/users")
 	api.Use(middlewares.Logging())
 	{
-		api.POST("/login", Login)
+		api.POST("/login", func(c *gin.Context) {
+			Login(c, rabbitMqConn, userSrv)
+		})
 		api.POST("/signup", SignUp)
 	}
 }
@@ -27,14 +36,8 @@ func Initiator(router *gin.Engine) {
 // @Success 200 {object} common.APIResponse{data=LoginResponse} "Success"
 // @Failure 500	{object} common.APIResponse "Failed"
 // @Router /api/users/login [post]
-func Login(ctx *gin.Context) {
-	var (
-		userRepo  = NewRepository(connection.DBConnections)
-		emailRepo = email.NewRepository(connection.DBConnections)
-		userSrv   = NewService(userRepo, emailRepo)
-	)
-
-	token, err := userSrv.LoginService(ctx)
+func Login(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, userSrv Service) {
+	token, err := userSrv.LoginService(ctx, rabbitMqConn)
 	if err != nil {
 		common.GenerateErrorResponse(ctx, err.Error())
 		return

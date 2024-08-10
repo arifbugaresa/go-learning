@@ -42,5 +42,13 @@
       "host": "smtp.gmail.com",
       "address": "smtp.gmail.com:587"
     }
+  },
+  "connection":{
+    "rabbit": {
+      "url": "amqp://admin:admin@localhost:5672",
+      "port": "",
+      "user": "admin",
+      "password": "admin"
+    }
   }
 }

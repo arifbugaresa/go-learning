@@ -10,12 +10,13 @@ import (
 	"go-learning/utils/constant"
 	"go-learning/utils/email"
 	"go-learning/utils/logger"
+	"go-learning/utils/rabbitmq"
 	"go-learning/utils/redis"
 	"time"
 )
 
 type Service interface {
-	LoginService(ctx *gin.Context) (result LoginResponse, err error)
+	LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ) (result LoginResponse, err error)
 	SignUpService(ctx *gin.Context) (err error)
 	SendEmailNotification(ctx *gin.Context) (err error)
 }
@@ -31,7 +32,7 @@ func NewService(repository Repository, emailRepository email.Repository) Service
 	}
 }
 
-func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse, err error) {
+func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ) (result LoginResponse, err error) {
 	var (
 		userReq         LoginRequest
 		redisPermission []middlewares.RedisPermission
@@ -101,27 +102,36 @@ func (service *userService) LoginService(ctx *gin.Context) (result LoginResponse
 		return result, err
 	}
 
-	// select mode app
-	if viper.GetString("app.mode") == "development" {
-		middlewares.DummyRedis[jwtToken] = string(redisSessionStr)
-	} else {
+	// set value redis session
+	if viper.GetString("app.mode") != constant.DevelopmentMode.String() {
 		err = redis.RedisClient.Set(ctx, jwtToken, string(redisSessionStr), 0).Err()
 		if err != nil {
 			err = errors.New("failed set value redis")
 			logger.ErrorWithCtx(ctx, nil, err)
 			return
 		}
+	} else {
+		middlewares.DummyRedis[jwtToken] = string(redisSessionStr)
 	}
 
 	ctx.Set("session", string(redisSessionStr))
 
 	result.Token = jwtToken
 
-	if viper.GetString("app.mode") == "staging" {
+	// send email & publish to rabbit mq
+	if viper.GetString("app.mode") == constant.StagingMode.String() {
+		// send email notification
 		err = service.SendEmailNotification(ctx)
 		if err != nil {
 			return
 		}
+
+		// publish to rabbitmq
+		err = rabbitMqConn.Publish(constant.EmailRabbitMqKey, "test email queue")
+		if err != nil {
+			logger.ErrorWithCtx(ctx, nil, err)
+		}
+		return
 	}
 
 	return

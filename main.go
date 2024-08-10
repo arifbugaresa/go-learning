@@ -9,6 +9,7 @@ import (
 	"go-learning/modules/employee"
 	"go-learning/modules/user"
 	"go-learning/utils/logger"
+	"go-learning/utils/rabbitmq"
 	"go-learning/utils/redis"
 	"go-learning/utils/scheduler"
 	"go-learning/utils/swagger"
@@ -32,16 +33,22 @@ func main() {
 
 	migration.Initiator(connection.DBConnections)
 
-	InitiateRouter()
+	// initiate rabbitmq connection
+	rabbitMqConn := rabbitmq.Initiator()
+	defer rabbitMqConn.Channel.Close()
+	defer rabbitMqConn.Conn.Close()
+
+	// initiate router
+	InitiateRouter(rabbitMqConn)
 }
 
-func InitiateRouter() {
+func InitiateRouter(rabbitMqConn *rabbitmq.RabbitMQ) {
 	router := gin.Default()
 
 	swagger.Initiator(router)
 
 	car.Initiator(router)
-	user.Initiator(router)
+	user.Initiator(router, rabbitMqConn)
 	employee.Initiator(router)
 
 	router.Run(":8080")
