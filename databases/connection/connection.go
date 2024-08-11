@@ -8,12 +8,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var (
-	DBConnections *sql.DB
-	err           error
-)
-
-func Initiator() {
+func Initiator() (dbConnection *sql.DB, err error) {
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		viper.GetString("migration.db.postgres.db_host"),
 		viper.GetInt("migration.db.postgres.db_port"),
@@ -22,13 +17,15 @@ func Initiator() {
 		viper.GetString("migration.db.postgres.db_name"),
 	)
 
-	DBConnections, err = sql.Open("postgres", dsn)
+	dbConnection, err = sql.Open("postgres", dsn)
 
 	// check connection
-	err = DBConnections.Ping()
+	err = dbConnection.Ping()
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println("Successfully connected to database")
+
+	return
 }

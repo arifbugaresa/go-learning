@@ -1,18 +1,18 @@
 package user
 
 import (
+	"database/sql"
 	"github.com/gin-gonic/gin"
-	"go-learning/databases/connection"
 	"go-learning/middlewares"
 	"go-learning/utils/common"
 	"go-learning/utils/email"
 	"go-learning/utils/rabbitmq"
 )
 
-func Initiator(router *gin.Engine, rabbitMqConn *rabbitmq.RabbitMQ) {
+func Initiator(router *gin.Engine, rabbitMqConn *rabbitmq.RabbitMQ, dbConnection *sql.DB) {
 	var (
-		userRepo  = NewRepository(connection.DBConnections)
-		emailRepo = email.NewRepository(connection.DBConnections)
+		userRepo  = NewRepository(dbConnection)
+		emailRepo = email.NewRepository(dbConnection)
 		userSrv   = NewService(userRepo, emailRepo)
 	)
 
@@ -22,7 +22,9 @@ func Initiator(router *gin.Engine, rabbitMqConn *rabbitmq.RabbitMQ) {
 		api.POST("/login", func(c *gin.Context) {
 			Login(c, rabbitMqConn, userSrv)
 		})
-		api.POST("/signup", SignUp)
+		api.POST("/signup", func(c *gin.Context) {
+			SignUp(c, userSrv)
+		})
 	}
 }
 
@@ -37,7 +39,22 @@ func Initiator(router *gin.Engine, rabbitMqConn *rabbitmq.RabbitMQ) {
 // @Failure 500	{object} common.APIResponse "Failed"
 // @Router /api/users/login [post]
 func Login(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, userSrv Service) {
-	token, err := userSrv.LoginService(ctx, rabbitMqConn)
+	var (
+		req LoginRequest
+	)
+
+	// validation request section
+	err := ctx.ShouldBind(&req)
+	if err != nil {
+		return
+	}
+
+	err = req.ValidateLogin()
+	if err != nil {
+		return
+	}
+
+	token, err := userSrv.LoginService(ctx, rabbitMqConn, req)
 	if err != nil {
 		common.GenerateErrorResponse(ctx, err.Error())
 		return
@@ -56,14 +73,22 @@ func Login(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, userSrv Service) {
 // @Success 200 {object} common.APIResponse "Success"
 // @Failure 500	{object} common.APIResponse "Failed"
 // @Router /api/users/signup [post]
-func SignUp(ctx *gin.Context) {
-	var (
-		userRepo  = NewRepository(connection.DBConnections)
-		emailRepo = email.NewRepository(connection.DBConnections)
-		userSrv   = NewService(userRepo, emailRepo)
-	)
+func SignUp(ctx *gin.Context, userSrv Service) {
+	var req SignUpRequest
 
-	err := userSrv.SignUpService(ctx)
+	err := ctx.ShouldBind(&req)
+	if err != nil {
+		common.GenerateErrorResponse(ctx, "invalid request body")
+		return
+	}
+
+	err = req.ValidateSignUp()
+	if err != nil {
+		common.GenerateErrorResponse(ctx, err.Error())
+		return
+	}
+
+	err = userSrv.SignUpService(ctx, req)
 	if err != nil {
 		common.GenerateErrorResponse(ctx, err.Error())
 		return

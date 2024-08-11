@@ -1,13 +1,11 @@
 package employee
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
-	"go-learning/utils/logger"
 )
 
 type Service interface {
-	GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, total int64, err error)
+	GetListEmployee(ctx *gin.Context, req GetEmployeeRequest) (result []GetEmployeeResponse, total int64, err error)
 }
 
 type userService struct {
@@ -20,19 +18,8 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (service *userService) GetListEmployee(ctx *gin.Context) (result []GetEmployeeResponse, total int64, err error) {
-	var (
-		req GetEmployeeRequest
-	)
-
-	err = ctx.ShouldBindJSON(&req)
-	if err != nil {
-		err = errors.New("failed to parse request body")
-		logger.ErrorWithCtx(ctx, nil, err)
-		return
-	}
-
-	employees, total, err := service.repository.GetAllEmployee(req)
+func (service *userService) GetListEmployee(ctx *gin.Context, req GetEmployeeRequest) (result []GetEmployeeResponse, total int64, err error) {
+	employees, total, err := service.repository.GetAllEmployee(ctx, req)
 	if err != nil {
 		return
 	}

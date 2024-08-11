@@ -16,8 +16,8 @@ import (
 )
 
 type Service interface {
-	LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ) (result LoginResponse, err error)
-	SignUpService(ctx *gin.Context) (err error)
+	LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, req LoginRequest) (result LoginResponse, err error)
+	SignUpService(ctx *gin.Context, req SignUpRequest) (err error)
 	SendEmailNotification(ctx *gin.Context) (err error)
 }
 
@@ -32,25 +32,13 @@ func NewService(repository Repository, emailRepository email.Repository) Service
 	}
 }
 
-func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ) (result LoginResponse, err error) {
+func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, req LoginRequest) (result LoginResponse, err error) {
 	var (
-		userReq         LoginRequest
 		redisPermission []middlewares.RedisPermission
 	)
 
-	// validation request section
-	err = ctx.ShouldBind(&userReq)
-	if err != nil {
-		return
-	}
-
-	err = userReq.ValidateLogin()
-	if err != nil {
-		return
-	}
-
 	// user section
-	user, err := service.repository.Login(ctx, userReq)
+	user, err := service.repository.Login(ctx, req)
 	if err != nil {
 		return
 	}
@@ -60,7 +48,7 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 		return
 	}
 
-	matches := common.CheckPassword(user.Password, userReq.Password)
+	matches := common.CheckPassword(user.Password, req.Password)
 	if !matches {
 		err = errors.New("wrong username or password")
 		logger.ErrorWithCtx(ctx, nil, err)
@@ -93,7 +81,7 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 		LoginAt:    time.Now(),
 		RoleId:     user.RoleId,
 		Permission: redisPermission,
-		ExpiredAt:  time.Now().Add(time.Minute * 3),
+		ExpiredAt:  time.Now().Add(time.Minute * 20),
 	}
 
 	redisSessionStr, err := json.Marshal(redisSession)
@@ -140,25 +128,13 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 	return
 }
 
-func (service *userService) SignUpService(ctx *gin.Context) (err error) {
-	var userReq SignUpRequest
-
-	err = ctx.ShouldBind(&userReq)
+func (service *userService) SignUpService(ctx *gin.Context, req SignUpRequest) (err error) {
+	user, err := req.ConvertToModelForSignUp()
 	if err != nil {
 		return err
 	}
 
-	err = userReq.ValidateSignUp()
-	if err != nil {
-		return err
-	}
-
-	user, err := userReq.ConvertToModelForSignUp()
-	if err != nil {
-		return err
-	}
-
-	err = service.repository.SignUp(user)
+	err = service.repository.SignUp(ctx, user)
 	if err != nil {
 		return err
 	}

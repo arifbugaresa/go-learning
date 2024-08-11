@@ -12,7 +12,7 @@ import (
 
 type Repository interface {
 	Login(ctx *gin.Context, user LoginRequest) (result User, err error)
-	SignUp(user User) (err error)
+	SignUp(ctx *gin.Context, user User) (err error)
 	GetListPermissionByRoleId(ctx *gin.Context, user User) (result []permission.Permission, err error)
 }
 
@@ -49,7 +49,7 @@ func (r *userRepository) Login(ctx *gin.Context, user LoginRequest) (result User
 	return
 }
 
-func (r *userRepository) SignUp(user User) (err error) {
+func (r *userRepository) SignUp(ctx *gin.Context, user User) (err error) {
 	conn := goqu.New(constant.PostgresDialect.String(), r.db)
 	dataset := conn.Insert(constant.UserTableName.String()).Rows(
 		goqu.Record{

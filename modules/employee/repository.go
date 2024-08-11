@@ -3,13 +3,14 @@ package employee
 import (
 	"database/sql"
 	"github.com/doug-martin/goqu/v9"
+	"github.com/gin-gonic/gin"
 	"go-learning/utils/common"
 	"go-learning/utils/constant"
 	"go-learning/utils/database"
 )
 
 type Repository interface {
-	GetAllEmployee(request GetEmployeeRequest) (result []Employee, total int64, err error)
+	GetAllEmployee(ctx *gin.Context, request GetEmployeeRequest) (result []Employee, total int64, err error)
 }
 
 type empRepository struct {
@@ -22,7 +23,7 @@ func NewRepository(dbParam *sql.DB) Repository {
 	}
 }
 
-func (r *empRepository) GetAllEmployee(request GetEmployeeRequest) (result []Employee, total int64, err error) {
+func (r *empRepository) GetAllEmployee(ctx *gin.Context, request GetEmployeeRequest) (result []Employee, total int64, err error) {
 	var (
 		sortField = "id"
 		sortOrder = "ASC"
