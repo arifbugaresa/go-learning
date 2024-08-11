@@ -19,10 +19,22 @@ func Initiator() *RabbitMQ {
 
 type RabbitMQInterface interface {
 	Connect() error
-	DeclareExchange(exchangeName string) (err error)
-	DeclareQueue(name constant.RabbitMqKey) (err error)
-	Bind(queueName constant.RabbitMqKey, routingKey, exchangeName string) (err error)
-	Publish(key constant.RabbitMqKey, msg string) (err error)
+
+	DeclareExchange(config MqConfig) (err error)
+	DeclareQueue(config MqConfig) (err error)
+	Bind(config MqConfig) (err error)
+
+	Publish(config MqConfig) (err error)
+	Consume() (err error)
+
+	ConsumeEmailQueue()
+}
+
+type MqConfig struct {
+	ExchangeName string
+	QueueName    constant.MqQueue
+	RoutingKey   string
+	Messsage     string
 }
 
 type RabbitMQ struct {
@@ -53,13 +65,13 @@ func (r *RabbitMQ) Connect() (err error) {
 	return
 }
 
-func (r *RabbitMQ) DeclareExchange(exchangeName string) (err error) {
+func (r *RabbitMQ) DeclareExchange(rabbitConfig MqConfig) (err error) {
 	err = r.Channel.ExchangeDeclare(
-		exchangeName, // nama exchange
-		"direct",     // tipe exchange
-		true,         // durable
-		false,        // auto delete
-		false,        // internal
+		rabbitConfig.ExchangeName, //  exchange name
+		"direct",                  //  exchange type
+		true,                      // durable
+		false,                     // auto delete
+		false,                     // internal
 		true,
 		nil, // arguments
 	)
@@ -70,15 +82,15 @@ func (r *RabbitMQ) DeclareExchange(exchangeName string) (err error) {
 	return
 }
 
-func (r *RabbitMQ) DeclareQueue(name constant.RabbitMqKey) (err error) {
+func (r *RabbitMQ) DeclareQueue(rabbitConfig MqConfig) (err error) {
 	// declaring queue with its properties over the the channel opened
 	_, err = r.Channel.QueueDeclare(
-		name.String(), // name
-		true,          // durable
-		false,         // auto delete
-		false,         // exclusive
-		false,         // no wait
-		nil,           // args
+		rabbitConfig.QueueName.String(), // name
+		true,                            // durable
+		false,                           // auto delete
+		false,                           // exclusive
+		false,                           // no wait
+		nil,                             // args
 	)
 	if err != nil {
 		panic(err)
@@ -87,11 +99,11 @@ func (r *RabbitMQ) DeclareQueue(name constant.RabbitMqKey) (err error) {
 	return
 }
 
-func (r *RabbitMQ) Bind(queueName constant.RabbitMqKey, routingKey, exchangeName string) (err error) {
+func (r *RabbitMQ) Bind(rabbitConfig MqConfig) (err error) {
 	err = r.Channel.QueueBind(
-		queueName.String(), // queue name
-		routingKey,         // routing key
-		exchangeName,       // exchange name
+		rabbitConfig.QueueName.String(), // queue name
+		rabbitConfig.RoutingKey,         // routing key
+		rabbitConfig.ExchangeName,       // exchange name
 		false,
 		nil,
 	)

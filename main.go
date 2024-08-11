@@ -33,10 +33,13 @@ func main() {
 
 	migration.Initiator(connection.DBConnections)
 
-	// initiate rabbitmq connection
+	// initiate rabbitmq publisher
 	rabbitMqConn := rabbitmq.Initiator()
 	defer rabbitMqConn.Channel.Close()
 	defer rabbitMqConn.Conn.Close()
+
+	// initiate rabbitmq consumer
+	_ = rabbitMqConn.Consume()
 
 	// initiate router
 	InitiateRouter(rabbitMqConn)

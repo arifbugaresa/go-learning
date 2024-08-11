@@ -127,7 +127,10 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 		}
 
 		// publish to rabbitmq
-		err = rabbitMqConn.Publish(constant.EmailRabbitMqKey, "test email queue")
+		err = rabbitMqConn.Publish(rabbitmq.MqConfig{
+			QueueName: constant.EmailQueue,
+			Messsage:  "Email Queue",
+		})
 		if err != nil {
 			logger.ErrorWithCtx(ctx, nil, err)
 		}

@@ -53,14 +53,15 @@ func (d EmailTemplate) String() string {
 	return string(d)
 }
 
-type RabbitMqKey string
+type MqQueue string
 
-func (r RabbitMqKey) String() string {
+func (r MqQueue) String() string {
 	return string(r)
 }
 
 const (
-	EmailRabbitMqKey RabbitMqKey = "email"
+	DefaultQueue MqQueue = "default"
+	EmailQueue   MqQueue = "email"
 )
 
 type AppMode string
