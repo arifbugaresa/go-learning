@@ -37,6 +37,7 @@ Long-term project to learn the Go programming language with [Arif Bugaresa](http
 * [TCK-IMD-017](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-017) - working with scheduler (cron)go 
 * [TCK-IMD-018](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-018) - working with email notification (gomail)
 * [TCK-IMD-019](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-019) - working with message broker (rabbitmq)
+* [TCK-IMD-020](https://github.com/arifbugaresa/go-learning/tree/TCK-IMD-020) - working with email notif rabbit mq
 
 ## Staying up to date
 To keep updating new case studies, You can fork or clone this project.
