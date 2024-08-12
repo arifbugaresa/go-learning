@@ -3,17 +3,14 @@ package email
 import (
 	"bytes"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"go-learning/utils/logger"
 	"gopkg.in/gomail.v2"
 	"html/template"
-	"net/smtp"
 )
 
 type Notification interface {
-	SetAuth() smtp.Auth
-	SendEmail(ctx *gin.Context)
+	SetAuth() Authentication
+	SendEmail() (err error)
 }
 
 type EmailNotif struct {
@@ -40,22 +37,24 @@ func (e *EmailNotif) SetAuth() Authentication {
 	}
 }
 
-func (e *EmailNotif) SendEmail(ctx *gin.Context) {
+func (e *EmailNotif) SendEmail() (err error) {
+	errChan := make(chan error, 1)
+
 	go func() {
 		auth := e.SetAuth()
 
 		// set data to body
 		t, err := template.New("webpage").Parse(e.Message)
 		if err != nil {
-			err = errors.New("Error parsing template: " + err.Error())
-			logger.ErrorWithCtx(ctx, nil, err)
+			errChan <- errors.New("Error parsing template: " + err.Error())
+			return
 		}
 
 		var msg bytes.Buffer
 		err = t.Execute(&msg, e.Data)
 		if err != nil {
-			err = errors.New("Error set data template: " + err.Error())
-			logger.ErrorWithCtx(ctx, nil, err)
+			errChan <- errors.New("Error set data template: " + err.Error())
+			return
 		}
 
 		// send email
@@ -68,7 +67,13 @@ func (e *EmailNotif) SendEmail(ctx *gin.Context) {
 		d := gomail.NewDialer(auth.Host, 587, auth.Username, auth.Password)
 
 		if err = d.DialAndSend(m); err != nil {
-			logger.ErrorWithCtx(ctx, nil, err)
+			errChan <- err
+			return
 		}
+
+		errChan <- nil
 	}()
+
+	err = <-errChan
+	return err
 }

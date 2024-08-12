@@ -18,7 +18,7 @@ import (
 type Service interface {
 	LoginService(ctx *gin.Context, rabbitMqConn *rabbitmq.RabbitMQ, req LoginRequest) (result LoginResponse, err error)
 	SignUpService(ctx *gin.Context, req SignUpRequest) (err error)
-	SendEmailNotification(ctx *gin.Context) (err error)
+	GetEmailNotification(ctx *gin.Context) (resp string, err error)
 }
 
 type userService struct {
@@ -64,7 +64,7 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 	permissions, err := service.repository.GetListPermissionByRoleId(ctx, user)
 	if err != nil {
 		err = errors.New("failed get permissions")
-		return
+		return LoginResponse{}, err
 	}
 
 	for _, permission := range permissions {
@@ -108,21 +108,13 @@ func (service *userService) LoginService(ctx *gin.Context, rabbitMqConn *rabbitm
 
 	// send email & publish to rabbit mq
 	if viper.GetString("app.mode") == constant.StagingMode.String() {
-		// send email notification
-		err = service.SendEmailNotification(ctx)
-		if err != nil {
-			return
-		}
+		emailStr, _ := service.GetEmailNotification(ctx)
 
 		// publish to rabbitmq
-		err = rabbitMqConn.Publish(rabbitmq.MqConfig{
+		_ = rabbitMqConn.Publish(rabbitmq.MqConfig{
 			QueueName: constant.EmailQueue,
-			Messsage:  "Email Queue",
+			Messsage:  emailStr,
 		})
-		if err != nil {
-			logger.ErrorWithCtx(ctx, nil, err)
-		}
-		return
 	}
 
 	return
@@ -142,7 +134,7 @@ func (service *userService) SignUpService(ctx *gin.Context, req SignUpRequest) (
 	return nil
 }
 
-func (service *userService) SendEmailNotification(ctx *gin.Context) (err error) {
+func (service *userService) GetEmailNotification(ctx *gin.Context) (resp string, err error) {
 	var (
 		session middlewares.RedisSession
 	)
@@ -172,7 +164,10 @@ func (service *userService) SendEmailNotification(ctx *gin.Context) (err error) 
 		},
 	}
 
-	userNotification.SendEmail(ctx)
+	message, err := json.Marshal(&userNotification)
+	if err != nil {
+		return "", errors.New(err.Error())
+	}
 
-	return
+	return string(message), nil
 }

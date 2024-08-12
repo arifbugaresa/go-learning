@@ -1,9 +1,13 @@
 package rabbitmq
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go-learning/utils/constant"
+	"go-learning/utils/email"
+	"go-learning/utils/logger"
 )
 
 func (r *RabbitMQ) Consume() (err error) {
@@ -49,7 +53,22 @@ func (r *RabbitMQ) ConsumeEmailQueue() {
 	// do your logic here
 	go func() {
 		for msg := range msgEmailQueues {
-			fmt.Printf("Received Message: %s From ConsumeEmailQueue \n", string(msg.Body))
+			ctx := &gin.Context{}
+
+			var emailNotif email.EmailNotif
+			err = json.Unmarshal(msg.Body, &emailNotif)
+			if err != nil {
+				logger.ErrorWithCtx(ctx, nil, err)
+			}
+
+			err = emailNotif.SendEmail()
+			if err != nil {
+				logger.ErrorWithCtx(ctx, nil, err)
+				fmt.Printf("Received Error Message: From ConsumeEmailQueue \n")
+				return
+			}
+
+			fmt.Printf("Received Success Message: From ConsumeEmailQueue \n")
 		}
 	}()
 }

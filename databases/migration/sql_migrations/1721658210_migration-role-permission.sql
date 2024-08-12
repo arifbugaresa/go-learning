@@ -46,6 +46,6 @@ CREATE TABLE role_permissions (
 ALTER TABLE role_permissions
     ADD CONSTRAINT uq_roleid_permissionid UNIQUE (role_id,permission_id);
 
-INSERT INTO role_permissions (role_id, permission_id) VALUES (1,4);
+INSERT INTO role_permissions (role_id, permission_id) VALUES ((select id from roles where name = 'Role Admin'),(select id from permissions where name = 'Permission Create Employee'));
 
 -- +migrate StatementEnd
